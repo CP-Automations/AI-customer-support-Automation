@@ -78,5 +78,5 @@ Completed
 **CP Automations**
 
 AI Automation Engineer specializing in AI-powered workflows, API integrations, and business process automation.
-workflow-screenshot.png
+![Workflow Screenshot](./Screenshot%202026-08-06%20005418.png)
 
