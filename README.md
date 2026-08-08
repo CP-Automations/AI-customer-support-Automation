@@ -1,4 +1,4 @@
-# AI Customer Support Automation
+<img width="1920" height="1008" alt="image" src="https://github.com/user-attachments/assets/f73f7718-e3b0-4497-943b-95c3e4a7dc1f" /># AI Customer Support Automation
 
 ## Overview
 
@@ -8,6 +8,7 @@ The workflow automates the process of receiving customer enquiries, storing the 
 
 ## Workflow 
 ![Workflow Screenshot](workflow-screenshot.png)
+
 
 Customer Form Submission
 → Airtable
