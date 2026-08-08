@@ -7,7 +7,7 @@ An AI-powered customer support automation workflow built with n8n, Airtable, an 
 The workflow automates the process of receiving customer enquiries, storing the enquiry, generating an AI-assisted response, recording the result, and sending the response by email.
 
 ## Workflow 
-![Workflow Screenshot](./screenshot/Screenshot%202026-08-06%20005418.png)
+![Workflow Screenshot](./workflow-screenshot.png)
 
 Customer Form Submission
 → Airtable
