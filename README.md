@@ -1,4 +1,4 @@
-<img width="1920" height="1008" alt="image" src="https://github.com/user-attachments/assets/f73f7718-e3b0-4497-943b-95c3e4a7dc1f" /># AI Customer Support Automation
+# AI Customer Support Automation
 
 ## Overview
 
