@@ -17,7 +17,10 @@ A user submits:
 The automation processes the information, searches for available job opportunities, uses AI to identify the most relevant opportunities, and sends personalized job recommendations to the user.
 
 ## Workflow
-![AI Job Finder](./AI-job-finder-workflow.png)
+
+<img width="1405" height="702" alt="AI-Job-finder-workflow png" src="https://github.com/user-attachments/assets/15f3da4f-b15c-4591-8477-2bd659251331" />
+
+
 
 User Form → Airtable → Jobs API → AI Recommendation → Airtable → Email
 
