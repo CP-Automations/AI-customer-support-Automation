@@ -2,7 +2,7 @@
 
 An AI-powered job recommendation automation built with n8n, Airtable, Jobs API, AI, and Email.
 
-📌
+
 ## Project Overview
 
 AI Job Finder helps users discover relevant job opportunities based on their preferred job role and country.
@@ -17,6 +17,7 @@ A user submits:
 The automation processes the information, searches for available job opportunities, uses AI to identify the most relevant opportunities, and sends personalized job recommendations to the user.
 
 ## Workflow
+AI-Job-finder-workflow.png
 
 User Form → Airtable → Jobs API → AI Recommendation → Airtable → Email
 
