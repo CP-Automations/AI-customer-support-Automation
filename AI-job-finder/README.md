@@ -20,7 +20,441 @@ The automation processes the information, searches for available job opportuniti
 
 <img width="1405" height="702" alt="AI-Job-finder-workflow png" src="https://github.com/user-attachments/assets/15f3da4f-b15c-4591-8477-2bd659251331" />
 
+###  Workflow File
+The complete n8n workflow is available here
 
+[My workflow.json](https://github.com/user-attachments/files/30865897/My.workflow.json)
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "job locator",
+        "formDescription": "AI-powered job recommendation workflow that collects user information, finds relevant jobs, generates personalized recommendations with AI, emails the results, and stores all data in Airtable.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "preferred job role",
+              "placeholder": "frontend developer",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "country",
+              "placeholder": "Nigeria",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cee40568-1fc2-4966-b8ae-dc4f8d5a204d",
+      "name": "On form submission",
+      "webhookId": "e5f69405-dfab-40f5-a336-7d9fd0e2a57a"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appZ760B4kaMMzFGb",
+          "mode": "list",
+          "cachedResultName": "Job finder",
+          "cachedResultUrl": "https://airtable.com/appZ760B4kaMMzFGb"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblvj8OcXiI8vt3FT",
+          "mode": "list",
+          "cachedResultName": "Job request",
+          "cachedResultUrl": "https://airtable.com/appZ760B4kaMMzFGb/tblvj8OcXiI8vt3FT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "email": "={{ $json.Email }}",
+            "Preferred role": "={{ $json['preferred job role'] }}",
+            "country": "={{ $json.country }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Preferred role",
+              "displayName": "Preferred role",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Recommendation ",
+              "displayName": "Recommendation ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f937a05b-d1b0-4065-9292-d3aafd431c22",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "mXOeoxHq3QYGxm1j",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=we are an expert Ai career adviser.\n\ncandidate name: {{ $('On form submission').item.json.Name }}\n\n\npreferred role: {{ $('On form submission').item.json['preferred job role'] }}\n     \n\ncountry  {{ $('On form submission').item.json.country }}\n\navailable jobs:   {{$json.jobs}}\nfrom the available jobs above\nFrom the available jobs above:\n\n1. Recommend the three best opportunities.\n2. Explain why each job is a good match.\n3. Mention the key skills needed.\n4. Encourage the user to apply.\n\nFormat the response as a professional email."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        0
+      ],
+      "id": "f14236cb-8959-4752-bdbd-30e85379b7bc",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "fRQD5sHsUUhCecYp",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/mcp-registry.himalayasRemoteJobs",
+      "typeVersion": 1.1,
+      "position": [
+        176,
+        208
+      ],
+      "id": "b4e00a1c-d2f8-4ed8-a19b-c9caa181a6c6",
+      "name": "Himalayas Remote Jobs MCP"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b1e0c54e-a3bd-41cc-8754-ffbad14783c3",
+              "name": "jobs",
+              "value": "Automation Engineer - Siemens Automation Engineer - Schneider Electric Industrial Automation Engineer - ABB PLC Automation Engineer - Honeywell Automation Engineer - Rockwell Automation",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "012baf4e-850f-4a8c-ac93-a9dcf2366839",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appZ760B4kaMMzFGb",
+          "mode": "list",
+          "cachedResultName": "Job finder",
+          "cachedResultUrl": "https://airtable.com/appZ760B4kaMMzFGb"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVcULLPkDyWGBof",
+          "mode": "list",
+          "cachedResultName": "Recommendations",
+          "cachedResultUrl": "https://airtable.com/appZ760B4kaMMzFGb/tblVcULLPkDyWGBof"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ai recommendation": "={{ $json.output[0].content[0].text }}",
+            "country": "={{ $('On form submission').item.json.country }}",
+            "job role": "={{ $('Edit Fields').item.json.jobs }}",
+            "Email": "={{ $('On form submission').item.json.Email }}",
+            "Name": "={{ $('On form submission').item.json.Name }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "job role",
+              "displayName": "job role",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Ai recommendation",
+              "displayName": "Ai recommendation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "a41a7ba2-a87f-4908-88a6-c1d2b8379486",
+      "name": "Create a record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "mXOeoxHq3QYGxm1j",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0BNKCJC5U1",
+          "mode": "list",
+          "cachedResultName": "all-ai-job-finder"
+        },
+        "text": "=New Ai job search\nname{{ $('On form submission').item.json.Name }}\n\nemail:{{ $('On form submission').item.json.Email }}\n\npreferred job role:\n{{ $('On form submission').item.json['preferred job role'] }}\n\ncountry:\n{{ $('On form submission').item.json.country }}\nAi recommendations have been generated and emailed successufully\n\n",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.6,
+      "position": [
+        1264,
+        0
+      ],
+      "id": "350536ee-7f6d-4ffb-8853-38e2e6a49243",
+      "name": "Send a message",
+      "webhookId": "69cd2814-6d9f-4ce8-99ac-40d1f88a4141",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "g0azxTEuvJF0RVPh",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Create a record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "4c5ce44e-9c44-492e-b89b-01c964e7f9c9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6738446cc2bc76dd73b71c75d7d083ecd6e81d44d38545115d5cbe57ba52116b"
+  },
+  "nodeGroups": [],
+  "id": "UjDXCwwjqV39QBLm",
+  "tags": []
+}
 
 User Form → Airtable → Jobs API → AI Recommendation → Airtable → Email
 
