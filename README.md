@@ -21,7 +21,7 @@ The complete n8n8 workflow is available here:
   "nodes": [
     {
       "parameters": {
-        "formTitle": "assignment1",
+        "formTitle": "AI Customer Support ",
         "formDescription": "please complete this form and upload your resume. We will get back to you soon",
         "formFields": {
           "values": [
